@@ -549,8 +549,6 @@ List<T> &List<T>::operator=(const List<T> &newList)
   return *this;
 }
 
-//* -------- ------- ------ ----- Functions ----- ------ ------- ---------------- ------- ------ -----  ----- ------ ------- --------
-
 //* -------- ------- ------ ----- Reacciones ----- ------ ------- ---------------- ------- ------ -----  ----- ------ ------- --------
 
 class Reaction
@@ -558,9 +556,11 @@ class Reaction
 private:
   int id;
   string name;
-  string estequiometria;
+  string stoichiometry;
   int lowerLimit;
   int higherLimit;
+  string genReaction;
+  string metabolites;
 
 public:
   Reaction();
@@ -571,22 +571,26 @@ public:
   string getEstequiometria() const;
   int getLowerLimit() const;
   int getHigherLimit() const;
+  string getGenReaction() const;
+  string getMetabolites() const;
 
   void setId(const int &);
   void setName(const string &);
-  void setEstequiometria(const string &);
+  void setStoichiometry(const string &);
   void setLowerLimit(const int &);
   void setHigherLimit(const int &);
+  void setGenReaction(const string &);
+  void setMetabolites(const string &);
 
   string toString();
 
-  bool operator == (const Reaction &) const;
-  bool operator > (const Reaction &) const;
+  bool operator==(const Reaction &) const;
+  bool operator>(const Reaction &) const;
 };
 
 Reaction::Reaction() {}
 
-Reaction::Reaction(const Reaction &r) : id(r.id), name(r.name), estequiometria(r.estequiometria), lowerLimit(r.lowerLimit), higherLimit(r.higherLimit) {}
+Reaction::Reaction(const Reaction &r) : id(r.id), name(r.name), stoichiometry(r.stoichiometry), lowerLimit(r.lowerLimit), higherLimit(r.higherLimit), genReaction(r.genReaction), metabolites(r.metabolites) {}
 
 int Reaction::getId() const
 {
@@ -600,7 +604,7 @@ string Reaction::getName() const
 
 string Reaction::getEstequiometria() const
 {
-  return estequiometria;
+  return stoichiometry;
 }
 
 int Reaction::getLowerLimit() const
@@ -613,6 +617,16 @@ int Reaction::getHigherLimit() const
   return higherLimit;
 }
 
+string Reaction::getMetabolites() const
+{
+  return metabolites;
+}
+
+string Reaction::getGenReaction() const
+{
+  return genReaction;
+}
+
 void Reaction::setId(const int &e)
 {
   id = e;
@@ -623,9 +637,9 @@ void Reaction::setName(const string &e)
   name = e;
 }
 
-void Reaction::setEstequiometria(const string &e)
+void Reaction::setStoichiometry(const string &e)
 {
-  estequiometria = e;
+  stoichiometry = e;
 }
 
 void Reaction::setLowerLimit(const int &e)
@@ -633,28 +647,41 @@ void Reaction::setLowerLimit(const int &e)
   lowerLimit = e;
 }
 
-void Reaction::setHigherLimit(const int &e){
+void Reaction::setHigherLimit(const int &e)
+{
   higherLimit = e;
+}
+
+void Reaction::setMetabolites(const string &e)
+{
+  metabolites = e;
+}
+
+void Reaction::setGenReaction(const string &e)
+{
+  genReaction = e;
 }
 
 string Reaction::toString()
 {
   string result{""};
-  result += "Id: " + id;
-  result += "Nombre: " + name;
-  result += "Estequiometria: " + estequiometria;
-  result += "Limite Inferior: " + to_string(lowerLimit);
-  result += "Limite Superior: " + to_string(higherLimit);
+  result += "\nId: " + to_string(id);
+  result += "\nNombre: " + name;
+  result += "\nEstequiometria: " + stoichiometry;
+  result += "\nLimite Inferior: " + to_string(lowerLimit);
+  result += "\nLimite Superior: " + to_string(higherLimit);
+  result += "\nGen-Reaccion: " + genReaction;
+  result += "\nMetabolites: " + metabolites;
 
   return result;
 };
 
-bool Reaction::operator == (const Reaction &e) const
+bool Reaction::operator==(const Reaction &e) const
 {
   return name == e.name;
 }
 
-bool Reaction::operator > (const Reaction &e) const
+bool Reaction::operator>(const Reaction &e) const
 {
   return name > e.name;
 }
@@ -685,8 +712,8 @@ public:
 
   string toString();
 
-  bool operator == (const Metabolite &) const;
-  bool operator > (const Metabolite &) const;
+  bool operator==(const Metabolite &) const;
+  bool operator>(const Metabolite &) const;
 };
 
 Metabolite::Metabolite() {}
@@ -736,20 +763,20 @@ void Metabolite::setCompartment(const string &e)
 string Metabolite::toString()
 {
   string result{""};
-  result += "Id: " + to_string(id);
-  result += "Nombre: " + name;
-  result += "Formula quimica: " + chemicalForm;
-  result += "Compartimiento: " + compartment;
+  result += "\nId: " + to_string(id);
+  result += "\nNombre: " + name;
+  result += "\nFormula quimica: " + chemicalForm;
+  result += "\nCompartimiento: " + compartment;
 
   return result;
 }
 
-bool Metabolite::operator == (const Metabolite &e) const
+bool Metabolite::operator==(const Metabolite &e) const
 {
   return name == e.name;
 }
 
-bool Metabolite::operator > (const Metabolite &e) const
+bool Metabolite::operator>(const Metabolite &e) const
 {
   return name > e.name;
 }
@@ -762,7 +789,7 @@ private:
   int id;
   string name;
   string functional;
-  string reaction;
+  string genReaction;
 
 public:
   Gen();
@@ -771,22 +798,22 @@ public:
   int getId() const;
   string getName() const;
   string getFunctional() const;
-  string getReaction() const;
+  string getGenReaction() const;
 
   void setId(const int &);
   void setName(const string &);
   void setFunctional(const string &);
-  void setReaction(const string &);
+  void setGenReaction(const string &);
 
   string toString();
 
-  bool operator == (const Gen &) const;
-  bool operator > (const Gen &) const;
+  bool operator==(const Gen &) const;
+  bool operator>(const Gen &) const;
 };
 
 Gen::Gen() {}
 
-Gen::Gen(const Gen &g) : id(g.id), name(g.name), functional(g.functional), reaction(g.reaction) {}
+Gen::Gen(const Gen &g) : id(g.id), name(g.name), functional(g.functional), genReaction(g.genReaction) {}
 
 int Gen::getId() const
 {
@@ -803,9 +830,9 @@ string Gen::getFunctional() const
   return functional;
 }
 
-string Gen::getReaction() const
+string Gen::getGenReaction() const
 {
-  return reaction;
+  return genReaction;
 }
 
 void Gen::setId(const int &e)
@@ -823,28 +850,28 @@ void Gen::setFunctional(const string &e)
   functional = e;
 }
 
-void Gen::setReaction(const string &e)
+void Gen::setGenReaction(const string &e)
 {
-  reaction = e;
+  genReaction = e;
 }
 
 string Gen::toString()
 {
   string result{""};
-  result += "Id: " + to_string(id);
-  result += "Nombre: " + name;
-  result += "Funcional: " + functional;
-  result += "Reaccion: " + reaction;
+  result += "\nId: " + to_string(id);
+  result += "\nNombre: " + name;
+  result += "\nFuncional: " + functional;
+  result += "\nReaccion: " + genReaction;
 
   return result;
 }
 
-bool Gen::operator == (const Gen &e) const
+bool Gen::operator==(const Gen &e) const
 {
   return name == e.name;
 }
 
-bool Gen::operator > (const Gen &e) const
+bool Gen::operator>(const Gen &e) const
 {
   return name > e.name;
 }
@@ -864,6 +891,26 @@ private:
   List<Reaction> reactionList;
   List<Metabolite> metaboliteList;
   List<Gen> genList;
+
+  int intAux;
+  string stringAux;
+  Reaction reactionAux;
+  Metabolite metaboliteAux;
+  Gen genAux;
+
+  Node<Reaction> *searchReaction();
+  Node<Metabolite> *searchMetabolite();
+  Node<Gen> *searchGen();
+
+  Node<Reaction> *insertReaction();
+  void insertMetabolite();
+  Node<Gen> *insertGen();
+
+  void editReaction();
+  void editMetabolite();
+  void editGen();
+
+  int optionList();
 
 public:
   Model();
@@ -886,13 +933,13 @@ public:
 
   string toString();
 
-  void chooseList() const;
+  void chooseList();
 
-  bool operator == (const Model &) const;
-  bool operator > (const Model &) const;
+  bool operator==(const Model &) const;
+  bool operator>(const Model &) const;
 };
 
-Model::Model() : memoryDirection(nullptr) {}
+Model::Model() : memoryDirection(nullptr), numberOfMetabolites(0), numberOfReactions(0) {}
 
 Model::Model(const Model &m) : name(m.name), memoryDirection(m.memoryDirection), numberOfMetabolites(m.numberOfMetabolites), numberOfReactions(m.numberOfReactions), objetiveExpression(m.objetiveExpression), compartments(m.compartments) {}
 
@@ -976,29 +1023,499 @@ string Model::toString()
   return result;
 }
 
-void Model::chooseList() const
+int Model::optionList()
 {
   int option{0};
-  cout << "\n1.Reacciones\n";
-  cout << "\n2.Metabolitos\n";
-  cout << "\n3.Genes\n";
+  cout << "\n0.Salir\n";
+  cout << "1.Agregar\n";
+  cout << "2.Acceder\n";
+  cout << "3.Buscar\n";
+  cout << "4.Editar\n";
+  cout << "5.Eliminar\n";
+  cout << "6.Ordenar\n";
   cin >> option;
+  return option;
+}
 
-  if (option == 1) {
-    // reactionList
-  } else if (option == 2) {
-    // metaboliteList
-  } else {
-    //genList
+Node<Reaction> *Model::searchReaction()
+{
+  Node<Reaction> *auxNodeReaction{nullptr};
+  cout << "Nombre: ";
+  cin.ignore();
+  getline(cin, stringAux);
+  reactionAux.setName(stringAux);
+  auxNodeReaction = reactionList.binarySearch(reactionAux);
+  if (auxNodeReaction == nullptr)
+  {
+    cout << "\nNo encontrado...\n";
+  }
+  return auxNodeReaction;
+}
+
+Node<Metabolite> *Model::searchMetabolite()
+{
+  Node<Metabolite> *auxNodeMetabolite{nullptr};
+  cout << "Nombre: ";
+  cin.ignore();
+  getline(cin, stringAux);
+  metaboliteAux.setName(stringAux);
+  auxNodeMetabolite = metaboliteList.binarySearch(metaboliteAux);
+  if (auxNodeMetabolite == nullptr)
+  {
+    cout << "\nNo encontrado...\n";
+    return nullptr;
+  }
+  return auxNodeMetabolite;
+}
+
+Node<Gen> *Model::searchGen()
+{
+  Node<Gen> *auxNodeGen{nullptr};
+  cout << "Nombre: ";
+  cin.ignore();
+  getline(cin, stringAux);
+  genAux.setName(stringAux);
+  auxNodeGen = genList.binarySearch(genAux);
+  if (auxNodeGen == nullptr)
+  {
+    cout << "\nNo encontrado...\n";
+  }
+  return auxNodeGen;
+}
+
+Node<Reaction> *Model::insertReaction()
+{
+  Node<Metabolite> *auxNodeMetabolite{nullptr};
+
+  cout << "Id: ";
+  cin >> intAux;
+  reactionAux.setId(intAux);
+  cout << "Nombre: ";
+  cin.ignore();
+  getline(cin, stringAux);
+  reactionAux.setName(stringAux);
+  cout << "Estequiometria: \n";
+  cout << "1. ->\n";
+  cout << "2. <-\n";
+  cout << "3. <->\n";
+  cin >> intAux;
+  if (intAux == 1)
+  {
+    stringAux = "->";
+  }
+  else if (intAux == 2)
+  {
+    stringAux = "<-";
+  }
+  else
+  {
+    stringAux = "<->";
+  }
+  reactionAux.setStoichiometry(stringAux);
+  cout << "Limite inferior: ";
+  cin >> intAux;
+  reactionAux.setLowerLimit(intAux);
+  cout << "Limite superior: ";
+  cin >> intAux;
+  reactionAux.setHigherLimit(intAux);
+
+  cout << "\nMetabolitos\n";
+  string stringMetabolites{""};
+  do
+  {
+    auxNodeMetabolite = searchMetabolite();
+    if (auxNodeMetabolite != nullptr)
+    {
+      stringMetabolites += "\n" + auxNodeMetabolite->getDataPtr()->toString();
+    }
+    cout << "\n1. Ingresar otro\n";
+    cout << "2. Crear metabolito\n";
+    cout << "3. Salir\n";
+    cin >> intAux;
+    if (intAux == 2) {
+      insertMetabolite();
+      stringMetabolites += "\n" + metaboliteList.getLast()->getDataPtr()->toString();
+    }
+  } while ((intAux != 3 or stringMetabolites == "") or (intAux == 3 and stringMetabolites == ""));
+
+  reactionAux.setMetabolites(stringMetabolites);
+
+  try
+  {
+    reactionList.insert(reactionAux, reactionList.getLast());
+    numberOfReactions++;
+    return reactionList.getLast();
+  }
+  catch (List<Reaction>::Exception ex)
+  {
+    ex.what();
+    return nullptr;
   }
 }
 
-bool Model::operator == (const Model &e) const
+void Model::insertMetabolite()
+{
+  cout << "Id: ";
+  cin >> intAux;
+  metaboliteAux.setId(intAux);
+  cout << "Nombre: ";
+  cin.ignore();
+  getline(cin, stringAux);
+  metaboliteAux.setName(stringAux);
+  cout << "Formula quimica: ";
+  cin.ignore();
+  getline(cin, stringAux);
+  metaboliteAux.setChemicalForm(stringAux);
+  cout << "Compartimiento: ";
+  cin.ignore();
+  getline(cin, stringAux);
+  metaboliteAux.setCompartment(stringAux);
+
+  try
+  {
+    metaboliteList.insert(metaboliteAux, metaboliteList.getLast());
+    numberOfMetabolites++;
+  }
+  catch (List<Metabolite>::Exception ex)
+  {
+    ex.what();
+  }
+}
+
+Node<Gen> *Model::insertGen()
+{
+  cout << "Id: ";
+  cin >> intAux;
+  genAux.setId(intAux);
+  cout << "Nombre: ";
+  cin.ignore();
+  getline(cin, stringAux);
+  genAux.setName(stringAux);
+  cout << "Funcional: ";
+  cin.ignore();
+  getline(cin, stringAux);
+  genAux.setFunctional(stringAux);
+
+  try
+  {
+    genList.insert(genAux, genList.getLast());
+    return genList.getLast();
+  }
+  catch (List<Reaction>::Exception ex)
+  {
+    ex.what();
+    return nullptr;
+  }
+}
+
+void Model::editReaction()
+{
+  Node<Reaction> *auxNodeReaction{nullptr};
+  auxNodeReaction = searchReaction();
+  if (auxNodeReaction == nullptr)
+    return;
+
+  cout << "\nEditar:\n";
+  cout << "1.Id\n";
+  cout << "2.Nombre\n";
+  cout << "3.Estequiometria\n";
+  cout << "4.Limite inferior\n";
+  cout << "5.Limite superior\n";
+
+  int option{0};
+  cin >> option;
+
+  switch (option)
+  {
+  case 1:
+  cout << "Id: ";
+  cin >> intAux;
+  auxNodeReaction->getDataPtr()->setId(intAux);
+    break;
+  case 2:
+  cout << "Nombre: ";
+  cin.ignore();
+  getline(cin, stringAux);
+  auxNodeReaction->getDataPtr()->setName(stringAux);
+    break;
+  case 3:
+  cout << "Estequiometria: \n";
+  cout << "1. ->\n";
+  cout << "2. <-\n";
+  cout << "3. <->\n";
+  cin >> intAux;
+  if (intAux == 1)
+  {
+    stringAux = "->";
+  }
+  else if (intAux == 2)
+  {
+    stringAux = "<-";
+  }
+  else
+  {
+    stringAux = "<->";
+  }
+  auxNodeReaction->getDataPtr()->setStoichiometry(stringAux);
+    break;
+  case 4:
+  cout << "Limite inferior: ";
+  cin >> intAux;
+  auxNodeReaction->getDataPtr()->setLowerLimit(intAux);
+    break;
+  case 5:
+  cout << "Limite superior: ";
+  cin >> intAux;
+  auxNodeReaction->getDataPtr()->setHigherLimit(intAux);
+    break;
+  default:
+    break;
+  }
+}
+
+void Model::editMetabolite()
+{
+  Node<Metabolite> *auxNodeMetabolite{nullptr};
+  auxNodeMetabolite = searchMetabolite();
+  if (auxNodeMetabolite == nullptr)
+    return;
+
+  cout << "\nEditar:\n";
+  cout << "1.Id\n";
+  cout << "2.Nombre\n";
+  cout << "3.Formula quimica\n";
+  cout << "4.Compartimento\n";
+
+  int option{0};
+  cin >> option;
+
+  switch (option)
+  {
+  case 1:
+    cout << "Id: ";
+    cin >> intAux;
+    auxNodeMetabolite->getDataPtr()->setId(intAux);
+    break;
+  case 2:
+    cout << "Nombre: ";
+    cin.ignore();
+    getline(cin, stringAux);
+    auxNodeMetabolite->getDataPtr()->setName(stringAux);
+    break;
+  case 3:
+    cout << "Formula quimica: ";
+    cin.ignore();
+    getline(cin, stringAux);
+    auxNodeMetabolite->getDataPtr()->setChemicalForm(stringAux);
+    break;
+  case 4:
+    cout << "Compartimiento: ";
+    cin.ignore();
+    getline(cin, stringAux);
+    auxNodeMetabolite->getDataPtr()->setCompartment(stringAux);
+    break;
+  default:
+    break;
+  }
+}
+
+void Model::editGen()
+{
+  Node<Gen> *auxNodeGen{nullptr};
+  auxNodeGen = searchGen();
+  if (auxNodeGen == nullptr)
+    return;
+
+  cout << "\nEditar:\n";
+  cout << "1.Id\n";
+  cout << "2.Nombre\n";
+  cout << "3.Funcional\n";
+
+  int option{0};
+  cin >> option;
+
+  switch (option)
+  {
+  case 1:
+    cout << "Id: ";
+    cin >> intAux;
+    auxNodeGen->getDataPtr()->setId(intAux);
+    break;
+  case 2:
+    cout << "Nombre: ";
+    cin.ignore();
+    getline(cin, stringAux);
+    auxNodeGen->getDataPtr()->setName(stringAux);
+    break;
+  case 3:
+    cout << "Funcional: ";
+    cin.ignore();
+    getline(cin, stringAux);
+    auxNodeGen->getDataPtr()->setFunctional(stringAux);
+    break;
+  default:
+    break;
+  }
+}
+
+void Model::chooseList()
+{
+  int objectOption{0};
+  int option{0};
+  string stringAux{""};
+  Node<Reaction> *auxNodeReaction{nullptr};
+  Node<Metabolite> *auxNodeMetabolite{nullptr};
+  Node<Gen> *auxNodeGen{nullptr};
+
+  do
+  {
+    cout << "\n0.Salir\n";
+    cout << "\n1.Reacciones\n";
+    cout << "\n2.Metabolitos\n";
+    cout << "\n3.Genes\n";
+    cin >> objectOption;
+
+    do
+    {
+      option = optionList();
+
+      switch (option)
+      {
+      case 1:
+        cout << "\n1.-------- ------- ------ ----- Agregar ----- ------ ------- -------- \n";
+        if (objectOption == 1 or objectOption == 3)
+        {
+          stringAux = "";
+          cout << "\nGen\n\n";
+          auxNodeGen = insertGen();
+          stringAux += auxNodeGen->getDataPtr()->getName();
+          cout << "\nReaccion\n\n";
+          auxNodeReaction = insertReaction();
+          stringAux += "-" + auxNodeReaction->getDataPtr()->getName();
+          auxNodeReaction->getDataPtr()->setGenReaction(stringAux);
+          auxNodeGen->getDataPtr()->setGenReaction(stringAux);
+        }
+        else
+        {
+          insertMetabolite();
+        }
+        break;
+      case 2:
+        cout << "\n2.-------- ------- ------ ----- Acceder ----- ------ ------- --------\n";
+        cout << "\nExistentes: \n";
+        if (objectOption == 1)
+        {
+          cout << reactionList.toString() << endl;
+        }
+        else if (objectOption == 2)
+        {
+          cout << metaboliteList.toString() << endl;
+        }
+        else
+        {
+          cout << genList.toString() << endl;
+        }
+        break;
+      case 3:
+        cout << "\n3.-------- ------- ------ ----- Buscar ----- ------ ------- -------- \n";
+        if (objectOption == 1)
+        {
+          auxNodeReaction = searchReaction();
+          if (auxNodeReaction != nullptr)
+          {
+            cout << "\nDato encontrado: " << auxNodeReaction << endl;
+            cout << auxNodeReaction->getDataPtr()->toString() << endl;
+          }
+        }
+        else if (objectOption == 2)
+        {
+          auxNodeMetabolite = searchMetabolite();
+          if (auxNodeMetabolite != nullptr)
+          {
+            cout << "\nDato encontrado: " << auxNodeMetabolite << endl;
+            cout << auxNodeMetabolite->getDataPtr()->toString() << endl;
+          }
+        }
+        else
+        {
+          auxNodeGen = searchGen();
+          if (auxNodeGen != nullptr)
+          {
+            cout << "\nDato encontrado: " << auxNodeGen << endl;
+            cout << auxNodeGen->getDataPtr()->toString() << endl;
+          }
+        }
+        break;
+      case 4:
+        cout << "\n4.-------- ------- ------ ----- Editar ----- ------ ------- -------- \n";
+        if (objectOption == 1)
+        {
+          editReaction();
+        }
+        else if (objectOption == 2)
+        {
+          editMetabolite();
+        }
+        else
+        {
+          editGen();
+        }
+        break;
+      case 5:
+        cout << "\n5.-------- ------- ------ ----- Eliminar ----- ------ ------- -------- \n";
+        try
+        {
+          if (objectOption == 1)
+          {
+            auxNodeReaction = searchReaction();
+            reactionList.remove(auxNodeReaction);
+          }
+          else if (objectOption == 2)
+          {
+            auxNodeMetabolite = searchMetabolite();
+            metaboliteList.remove(auxNodeMetabolite);
+          }
+          else
+          {
+            auxNodeGen = searchGen();
+            genList.remove(auxNodeGen);
+          }
+          cout << "\nElemento eliminado\n";
+        }
+        catch (List<Model>::Exception ex)
+        {
+          ex.what();
+        }
+        break;
+      case 6:
+        cout << "\n6.-------- ------- ------ ----- Ordenar ----- ------ ------- --------\n";
+        if (objectOption == 1)
+        {
+          reactionList.bubbleSort();
+        }
+        else if (objectOption == 2)
+        {
+          metaboliteList.bubbleSort();
+        }
+        else
+        {
+          genList.bubbleSort();
+        }
+        cout << "\nElementos ordenados\n";
+        break;
+      default:
+        break;
+      }
+    } while (option != 0);
+  } while (objectOption != 0);
+}
+
+bool Model::operator==(const Model &e) const
 {
   return name == e.name;
 }
 
-bool Model::operator > (const Model &e) const
+bool Model::operator>(const Model &e) const
 {
   return name > e.name;
 }
@@ -1031,13 +1548,14 @@ Interface::Interface(List<Model> &modelList)
 int Interface::optionList()
 {
   int option{0};
-  cout << "\n1.Agregar\n";
+  cout << "\n-------- ------- ------ ----- Modelo Metabolico ----- ------ ------- --------\n";
+  cout << "\n0.Salir\n";
+  cout << "1.Agregar\n";
   cout << "2.Acceder\n";
   cout << "3.Buscar\n";
   cout << "4.Editar\n";
   cout << "5.Eliminar\n";
   cout << "6.Ordenar\n";
-  cout << "8.Salir\n";
   cin >> option;
   return option;
 }
@@ -1051,14 +1569,14 @@ void Interface::addModel(List<Model> &modelList)
   getline(cin, stringAux);
   modelAux.setName(stringAux);
 
-  cout << "\nAgregar Metabolito: ";
-  cout << "\nAgregar Reaccion: ";
+  // cout << "Agregar Metabolito: ";
+  // cout << "Agregar Reaccion: ";
 
-  cout << "\nExpresion Objetivo: ";
+  cout << "Expresion Objetivo: ";
   getline(cin, stringAux);
   modelAux.setObjetiveExpression(stringAux);
 
-  cout << "\nCompartimientos: ";
+  cout << "Compartimientos: ";
   getline(cin, stringAux);
   modelAux.setCompartments(stringAux);
 
@@ -1069,17 +1587,21 @@ void Interface::addModel(List<Model> &modelList)
   // modelList.getLast()->getDataPtr()->setMemoryDirection(modelList.getFirst());
 }
 
-Node<Model> * Interface::search(List<Model> &modelList) {
+Node<Model> *Interface::search(List<Model> &modelList)
+{
   string stringAux{""};
   Node<Model> *auxNodeModel{nullptr};
   cout << "Nombre del Modelo: ";
   cin.ignore();
   getline(cin, stringAux);
   modelAux.setName(stringAux);
-  auxNodeModel = modelList.linearSearch(modelAux);
+  auxNodeModel = modelList.binarySearch(modelAux);
+  if (auxNodeModel == nullptr)
+  {
+    cout << "\nModelo no encontrado...\n";
+  }
   return auxNodeModel;
 }
-
 
 void Interface::userInterface(List<Model> &modelList)
 {
@@ -1092,38 +1614,32 @@ void Interface::userInterface(List<Model> &modelList)
     switch (option)
     {
     case 1:
-      cout << "\n1.Agregar Modelo Metabolico: \n";
+      cout << "\n1.-------- ------- ------ ----- Agregar ----- ------ ------- -------- \n";
       addModel(modelList);
       break;
     case 2:
-      cout << "\n2.Acceder\n";
+      cout << "\n2.-------- ------- ------ ----- Acceder ----- ------ ------- --------\n";
       cout << "\nModelos Metabolicos Existentes: \n";
       cout << modelList.toString() << endl;
-      cout << "Nombre del Modelo: ";
-      cin.ignore();
-      getline(cin, stringAux);
-      modelAux.setName(stringAux);
-      auxNodeModel = modelList.linearSearch(modelAux);
-      if (auxNodeModel != nullptr) {
+      auxNodeModel = search(modelList);
+      if (auxNodeModel != nullptr)
+      {
+        cout << "\nAcceso correcto: \n";
         auxNodeModel->getDataPtr()->chooseList();
       }
       break;
     case 3:
-      cout << "\n3.Buscar: \n";
+      cout << "\n3.-------- ------- ------ ----- Buscar ----- ------ ------- -------- \n";
       auxNodeModel = search(modelList);
-      if (auxNodeModel != nullptr) {
-        cout << "\nDato encontrado: \n" << auxNodeModel->getDataPtr()->toString() << endl;
-      } else {
-        cout << "\nDato no encontrado... \n";
+      if (auxNodeModel != nullptr)
+      {
+        cout << "\nDato encontrado: " << auxNodeModel << endl;
+        cout << auxNodeModel->getDataPtr()->toString() << endl;
       }
       break;
     case 4:
-      cout << "\n4.Editar: \n";
-      cout << "Nombre del Modelo a editar: ";
-      cin.ignore();
-      getline(cin, stringAux);
-      modelAux.setName(stringAux);
-      auxNodeModel = modelList.linearSearch(modelAux);
+      cout << "\n4.-------- ------- ------ ----- Editar ----- ------ ------- -------- \n";
+      auxNodeModel = search(modelList);
       cout << "\n4.Editar: \n";
       cout << "1.Nombre\n";
       cout << "2.Expresion Objetivo: \n";
@@ -1134,37 +1650,42 @@ void Interface::userInterface(List<Model> &modelList)
       cin.ignore();
       getline(cin, stringAux);
 
-      if (option == 1) {
+      if (option == 1)
+      {
         auxNodeModel->getDataPtr()->setName(stringAux);
-      } else if ( option == 2) {
+      }
+      else if (option == 2)
+      {
         auxNodeModel->getDataPtr()->setObjetiveExpression(stringAux);
-      } else {
+      }
+      else
+      {
         auxNodeModel->getDataPtr()->setCompartments(stringAux);
       }
 
       break;
     case 5:
-      cout << "\n4.Eliminar: \n";
-      cout << "Nombre del modelo a eliminar: ";
-      cin.ignore();
-      getline(cin, stringAux);
-      modelAux.setName(stringAux);
-      auxNodeModel = modelList.linearSearch(modelAux);
-      try {
+      cout << "\n5.-------- ------- ------ ----- Eliminar ----- ------ ------- -------- \n";
+      auxNodeModel = search(modelList);
+      try
+      {
         modelList.remove(auxNodeModel);
         cout << "\nElemento eliminado\n";
-      } catch (List<Model>::Exception ex) {
+      }
+      catch (List<Model>::Exception ex)
+      {
         ex.what();
       }
       break;
     case 6:
+      cout << "\n6.-------- ------- ------ ----- Ordenar ----- ------ ------- --------\n";
       modelList.bubbleSort();
       cout << "\nElementos ordenados\n";
       break;
     default:
       break;
     }
-  } while (option != 8);
+  } while (option != 0);
 }
 
 //* -------- ------- ------ ----- Main ----- ------ ------- ---------------- ------- ------ -----  ----- ------ ------- --------
